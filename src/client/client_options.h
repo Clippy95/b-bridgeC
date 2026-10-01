@@ -55,6 +55,13 @@ namespace ClientOptions {
     return bridge_util::Config::getOption<bool>("client.enableBackbufferCapture", false);
   }
 
+  // Some legacy cubemap loaders copy lower mips using the top-level pitch.
+  // Reserve enough CPU storage for that copy without changing the D3D9 pitch
+  // or the amount of data uploaded to the server.
+  inline bool getPadCubeTextureMipShadows() {
+    return bridge_util::Config::getOption<bool>("client.padCubeTextureMipShadows", false);
+  }
+
   inline DI::ForwardPolicy getForwardDirectInputMousePolicy() {
     return (DI::ForwardPolicy)bridge_util::Config::getOption<int>("client.DirectInput.forward.mousePolicy", DI::RemixUIActive);
   }

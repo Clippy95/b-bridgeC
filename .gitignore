@@ -34,3 +34,6 @@ vsgen/__pycache__/**
 /gametargets.conf
 # manim output
 media/
+
+# Repository-local build and dump-analysis Python dependencies
+_tools/python-deps/

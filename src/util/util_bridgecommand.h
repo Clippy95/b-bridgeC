@@ -120,6 +120,23 @@ public:
   // The writer-channel lock doubles as the client's device lock (recursive, see util_ipcchannel.h).
   static inline void lockWriter() { s_pWriterChannel->m_mutex.lock(); }
   static inline void unlockWriter() { s_pWriterChannel->m_mutex.unlock(); }
+  // A reply queue has one consumer. Keep the writer lock from before sending a
+  // synchronous request until its reply data and header have both been consumed.
+  // Locking only waitForCommand() would let a later request wait on an earlier
+  // thread's reply, filling both queues. The channel lock is recursive, so a
+  // Command or surface upload inside the transaction can safely reuse it.
+  class ResponseLock {
+    const bool m_enabled;
+  public:
+    explicit ResponseLock(bool enabled = true) : m_enabled(enabled) {
+      if (m_enabled) lockWriter();
+    }
+    ~ResponseLock() {
+      if (m_enabled) unlockWriter();
+    }
+    ResponseLock(const ResponseLock&) = delete;
+    ResponseLock& operator=(const ResponseLock&) = delete;
+  };
   static inline const WriterChannel& getWriterChannel() {
     return *s_pWriterChannel;
   }

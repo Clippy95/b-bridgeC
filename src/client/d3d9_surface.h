@@ -37,6 +37,7 @@ class Direct3DSurface9_LSS: public Direct3DResource9_LSS<IDirect3DSurface9> {
 
   const D3DSURFACE_DESC m_desc;
   const bool m_bUseSharedHeap = false;
+  const size_t m_minimumBufferSize = 0;
   gdi::D3DKMT_DESTROYDCFROMMEMORY m_dcDesc;
   SharedHeap::AllocId m_bufferId = SharedHeap::kInvalidId;
   struct LockInfo {
@@ -60,9 +61,11 @@ public:
   Direct3DSurface9_LSS(BaseDirect3DDevice9Ex_LSS* const pDevice,
                        ContainerType* const pContainer,
                        const D3DSURFACE_DESC& desc, 
-                       bool isBackBuffer = false)
+                       bool isBackBuffer = false,
+                       size_t minimumBufferSize = 0)
     : Direct3DResource9_LSS((IDirect3DSurface9*)nullptr, pDevice, pContainer)
     , m_bUseSharedHeap(GlobalOptions::getUseSharedHeapForTextures())
+    , m_minimumBufferSize(minimumBufferSize)
     , m_desc(desc)
     , m_isBackBuffer(isBackBuffer) {
   }

@@ -146,6 +146,17 @@ free region over the session.
   of its time in the client wrapper.
 - Characterise multi-hour sessions.
 
+## Other Direct3D 9 games
+
+The bridge intercepts standard D3D9 calls and has no GTA IV executable addresses or
+engine hooks. The shipped DXVK settings and performance measurements are specific to
+GTA IV; other games still need compatibility testing and their own settings.
+
+Saints Row 2 needs `client.padCubeTextureMipShadows = True` to tolerate its cubemap
+loader's oversized lower-mip copies. This option is independent of the executable name,
+so it also applies to renamed total conversions. See [the SR2 compatibility notes](docs/sr2-compatibility.md)
+for the crash diagnosis, setup, memory cost, and runtime regression test.
+
 ## Installation
 
 See [INSTALL.md](INSTALL.md). Changes by version are in [CHANGELOG.md](CHANGELOG.md).

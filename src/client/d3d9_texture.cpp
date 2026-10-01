@@ -179,6 +179,7 @@ HRESULT Direct3DTexture9_LSS::UnlockRect(UINT Level) {
 HRESULT Direct3DTexture9_LSS::AddDirtyRect(CONST RECT* pDirtyRect) {
   LogFunctionCall();
   
+  DeviceBridge::ResponseLock responseLock(GlobalOptions::getSendAllServerResponses());
   UID currentUID = 0;
   {
     ClientMessage c(Commands::IDirect3DTexture9_AddDirtyRect, getId());

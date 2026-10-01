@@ -47,7 +47,7 @@ Direct3DSurface9_LSS::~Direct3DSurface9_LSS() {
     }
   } else if (m_shadow) {
     const auto surfaceSize =
-      bridge_util::calcTotalSizeOfRect(m_desc.Width, m_desc.Height, m_desc.Format);
+      std::max(m_minimumBufferSize, size_t(bridge_util::calcTotalSizeOfRect(m_desc.Width, m_desc.Height, m_desc.Format)));
 
     g_totalSurfaceShadow -= surfaceSize;
     Logger::trace(format_string("Releasing shadow of surface [%p] "
@@ -122,6 +122,9 @@ HRESULT Direct3DSurface9_LSS::GetDesc(D3DSURFACE_DESC* pDesc) {
 
 HRESULT Direct3DSurface9_LSS::LockRect(D3DLOCKED_RECT* pLockedRect, CONST RECT* pRect, DWORD Flags) {
   LogFunctionCall();
+  if (pLockedRect == nullptr) {
+    return D3DERR_INVALIDCALL;
+  }
   // Store locked rect pointer locally so we can copy the data on unlock
   {
     BRIDGE_PARENT_DEVICE_LOCKGUARD();
@@ -135,6 +138,7 @@ HRESULT Direct3DSurface9_LSS::LockRect(D3DLOCKED_RECT* pLockedRect, CONST RECT* 
 
   // We send LockRect() calls to server in cases wherein backbuffer is used to capture the screenshot
   if (m_isBackBuffer && ClientOptions::getEnableBackbufferCapture() && !(Flags & D3DLOCK_DISCARD)) {
+    DeviceBridge::ResponseLock responseLock;
     UID currentUID;
     {
       ClientMessage c(Commands::IDirect3DSurface9_LockRect, getId());
@@ -206,7 +210,7 @@ bool Direct3DSurface9_LSS::lock(D3DLOCKED_RECT& lockedRect, const RECT* pRect, c
   const RECT rect = resolveLockInfoRect(pRect, m_desc);
   lockedRect.Pitch = bridge_util::calcRowSize(m_desc.Width, m_desc.Format);
   const auto surfaceSize =
-    bridge_util::calcTotalSizeOfRect(m_desc.Width, m_desc.Height, m_desc.Format);
+    std::max(m_minimumBufferSize, size_t(bridge_util::calcTotalSizeOfRect(m_desc.Width, m_desc.Height, m_desc.Format)));
   if (m_bUseSharedHeap) {
     auto discardBufId = SharedHeap::kInvalidId;
     const bool bDiscard = (flags & D3DLOCK_DISCARD) != 0;

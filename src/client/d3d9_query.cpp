@@ -92,6 +92,7 @@ DWORD Direct3DQuery9_LSS::GetDataSize() {
 HRESULT Direct3DQuery9_LSS::Issue(DWORD dwIssueFlags) {
   LogFunctionCall();
   
+  DeviceBridge::ResponseLock responseLock(GlobalOptions::getSendAllServerResponses());
   UID currentUID = 0;
   
   {
@@ -107,6 +108,7 @@ HRESULT Direct3DQuery9_LSS::Issue(DWORD dwIssueFlags) {
 HRESULT Direct3DQuery9_LSS::GetData(void* pData, DWORD dwSize, DWORD dwGetDataFlags) {
   LogFunctionCall();
 
+  DeviceBridge::ResponseLock responseLock;
   UID currentUID = 0;
   {
     ClientMessage c(Commands::IDirect3DQuery9_GetData, getId());

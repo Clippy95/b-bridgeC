@@ -137,6 +137,7 @@ public:
       }
     }
  
+    DeviceBridge::ResponseLock responseLock(GlobalOptions::getSendAllServerResponses());
     UID currentUID = 0;
     {
       ClientMessage c(Commands::IDirect3DBaseTexture9_SetAutoGenFilterType, getId());

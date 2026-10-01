@@ -101,6 +101,7 @@ UINT Direct3D9Ex_LSS::GetAdapterCount() {
     return m_adapterCount;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -132,6 +133,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterIdentifier(UINT Adapter, DWORD Flags, D3DADAP
     return S_OK;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -169,6 +171,7 @@ UINT Direct3D9Ex_LSS::GetAdapterModeCount(UINT Adapter, D3DFORMAT Format) {
     return m_adapterModeCount[key];
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -197,6 +200,7 @@ HRESULT Direct3D9Ex_LSS::EnumAdapterModes(UINT Adapter, D3DFORMAT Format, UINT M
     return S_OK;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -233,6 +237,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterDisplayMode(UINT Adapter, D3DDISPLAYMODE* pMo
     return S_OK;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -264,6 +269,7 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceType(UINT Adapter, D3DDEVTYPE CheckType, D3D
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -286,6 +292,7 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceFormat(UINT Adapter, D3DDEVTYPE DeviceType, 
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -312,6 +319,7 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceMultiSampleType(UINT Adapter, D3DDEVTYPE Dev
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -340,6 +348,7 @@ HRESULT Direct3D9Ex_LSS::CheckDepthStencilMatch(UINT Adapter, D3DDEVTYPE DeviceT
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -362,6 +371,7 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceFormatConversion(UINT Adapter, D3DDEVTYPE De
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -393,6 +403,7 @@ HRESULT Direct3D9Ex_LSS::GetDeviceCaps(UINT Adapter, D3DDEVTYPE DeviceType, D3DC
     return S_OK;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -420,6 +431,7 @@ HRESULT Direct3D9Ex_LSS::GetDeviceCaps(UINT Adapter, D3DDEVTYPE DeviceType, D3DC
 HMONITOR Direct3D9Ex_LSS::GetAdapterMonitor(UINT Adapter) {
   LogFunctionCall();
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -459,6 +471,7 @@ UINT Direct3D9Ex_LSS::GetAdapterModeCountEx(UINT Adapter, CONST D3DDISPLAYMODEFI
   }
 
   UINT cnt = 0;
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -487,6 +500,7 @@ HRESULT Direct3D9Ex_LSS::EnumAdapterModesEx(UINT Adapter, CONST D3DDISPLAYMODEFI
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -523,6 +537,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterDisplayModeEx(UINT Adapter, D3DDISPLAYMODEEX*
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {
@@ -579,6 +594,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterLUID(UINT Adapter, LUID* pLUID) {
     return  D3DERR_INVALIDCALL;
   }
 
+  ModuleBridge::ResponseLock responseLock;
   UID currentUID = 0;
   // Send command to server and wait for response
   {

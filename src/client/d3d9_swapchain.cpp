@@ -273,6 +273,7 @@ HRESULT Direct3DSwapChain9_LSS::GetFrontBufferData(IDirect3DSurface9* pDestSurfa
   const auto pLssDestinationSurface = bridge_cast<Direct3DSurface9_LSS*>(pDestSurface);
   const auto pIDestinationSurface = pLssDestinationSurface->D3D<IDirect3DSurface9>();
 
+  DeviceBridge::ResponseLock responseLock;
   UID currentUID = 0;
   {
     ClientMessage c(Commands::IDirect3DSwapChain9_GetFrontBufferData, getId());
@@ -314,6 +315,7 @@ HRESULT Direct3DSwapChain9_LSS::GetBackBuffer(UINT iBackBuffer, D3DBACKBUFFER_TY
     
   (*ppBackBuffer) = pLssSurface;
 
+  DeviceBridge::ResponseLock responseLock(GlobalOptions::getSendAllServerResponses());
   UID currentUID = 0;
   // Add handles for backbuffer
   {

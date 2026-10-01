@@ -62,6 +62,7 @@ public:
       auto* const pLssBackBuffer = trackWrapper(new Direct3DSurface9_LSS(pDevice, this, backBufferDesc, true));
 
       setChild(childIdx, pLssBackBuffer);
+      DeviceBridge::ResponseLock responseLock(GlobalOptions::getSendAllServerResponses());
       UID currentUID = 0;
       {
         ClientMessage c(Commands::IDirect3DSwapChain9_GetBackBuffer, getId());

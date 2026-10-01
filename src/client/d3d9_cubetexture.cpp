@@ -127,7 +127,14 @@ HRESULT Direct3DCubeTexture9_LSS::GetCubeMapSurface(D3DCUBEMAP_FACES FaceType, U
 
     GetLevelDesc(Level, &desc);
 
-    pLssCubeMapSurface = trackWrapper(new Direct3DSurface9_LSS(m_pDevice, this, desc));
+    size_t minimumBufferSize = 0;
+    if (ClientOptions::getPadCubeTextureMipShadows()) {
+      // Keep mip rows tightly packed as usual. Only the backing allocation is
+      // enlarged to tolerate a loader retaining the top-level row size.
+      minimumBufferSize = size_t(bridge_util::calcRowSize(getDesc().Width, desc.Format))
+        * bridge_util::calcStride(desc.Height, desc.Format);
+    }
+    pLssCubeMapSurface = trackWrapper(new Direct3DSurface9_LSS(m_pDevice, this, desc, false, minimumBufferSize));
     (*ppCubeMapSurface) = (IDirect3DSurface9*) pLssCubeMapSurface;
 
     setChild(surfaceIndex, pLssCubeMapSurface);
@@ -193,6 +200,7 @@ HRESULT Direct3DCubeTexture9_LSS::UnlockRect(D3DCUBEMAP_FACES FaceType, UINT Lev
 HRESULT Direct3DCubeTexture9_LSS::AddDirtyRect(D3DCUBEMAP_FACES FaceType, CONST RECT* pDirtyRect) {
   LogFunctionCall();
 
+  DeviceBridge::ResponseLock responseLock(GlobalOptions::getSendAllServerResponses());
   UID currentUID = 0;
   {
     ClientMessage c(Commands::IDirect3DCubeTexture9_AddDirtyRect, getId());
